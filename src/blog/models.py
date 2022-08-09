@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 # choices
 
@@ -44,6 +44,9 @@ class NewsLetter(models.Model):
 	created_at = models.DateTimeField(null=False)
 	updated_at = models.DateTimeField(null=True)
 
+	def __str__(self) -> str:
+		return '<Newsletter ' + self.slug + '>' 
+
 class TypeName(models.TextChoices):
 	POST = 'post'
 	PAGE = 'page'
@@ -87,4 +90,20 @@ class Post(models.Model):
 	canonical_url = models.URLField(max_length=2000, null=True)
 	newsletter = models.ForeignKey("NewsLetter", on_delete=models.CASCADE)
 
+class PostMeta(models.Model):
+	id = models.BigAutoField(primary_key=True, null=False)
+	post = models.OneToOneField(Post, max_length=24, null=False, unique=True, on_delete=models.CASCADE)
+	og_image = models.CharField(max_length=2000, null=True)
+	og_title = models.CharField(max_length=300, null=True)
+	og_description = models.CharField(max_length=500, null=True)
+	twitter_image = models.CharField(max_length=2000, null=True)
+	twitter_title = models.CharField(max_length=300, null=True)
+	twitter_description = models.CharField(max_length=500, null=True)
+	meta_title = models.CharField(max_length=500, null=True)
+	meta_description = models.CharField(max_length=2000, null=True)
+	email_subject = models.CharField(max_length=300, null=True)
+	frontmatter = models.TextField(max_length=65535, null=True)
+	feature_image_alt = models.CharField(max_length=191, null=True)
+	feature_image_caption = models.TextField(max_length=65535, null=True)
+	email_only = models.BooleanField(null=False, default=False)
 
