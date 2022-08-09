@@ -21,7 +21,7 @@ class NewsLetter(models.Model):
 		CENTER = 'center'
 		LEFT = 'left'
 	
-	id = models.BigAutoField(primary_key=True)
+	id = models.BigAutoField(primary_key=True, null=False)
 	# uuid = models.UUIDField(max_length=36, null=False, unique=True)
 	name = models.CharField(max_length=191, null=False, unique=True)
 	description = models.TextField(max_length=2000, null=True)
@@ -38,8 +38,53 @@ class NewsLetter(models.Model):
 	title_font_category = models.CharField(max_length=191, null=False, choices =TitleAlignment.choices, default=TitleAlignment.CENTER)
 	show_feature_image = models.BooleanField(null=False, default=True)
 	body_font_category = models.CharField(max_length=191, null=False, choices=FontCategory.choices, default=FontCategory.SANS_SERIF)
-	footer_content = models.CharField(max_length=1000000000, null=True)
+	footer_content = models.TextField(max_length=1000000000, null=True)
 	show_badge = models.BooleanField(null=False, default=True)
 	show_header_name = models.BooleanField(null=False, default=True)
 	created_at = models.DateTimeField(null=False)
 	updated_at = models.DateTimeField(null=True)
+
+class TypeName(models.TextChoices):
+	POST = 'post'
+	PAGE = 'page'
+
+class Post(models.Model):
+
+	class Status(models.TextChoices):
+		PUBLISHED = 'published'
+		DRAFT = 'draft'
+		SCHEDULED = 'scheduled'
+		SENT = 'sent'
+
+	id = models.BigAutoField(primary_key=True, null=False)
+	# uuid = models.UUIDField(max_length=36, null=False, unique=True)
+	title = models.CharField(max_length=2000, null=False)
+	slug = models.SlugField(max_length=191, null=False)
+	mobiledoc = models.TextField(max_length=1000000000, null=True)
+	html = models.TextField(max_length=1000000000, null=True)
+	comment_id = models.CharField(max_length=50, null=True)
+	plaintext = models.TextField(max_length=1000000000, null=True)
+	feature_image = models.CharField(max_length=2000, null=True)
+	featured = models.BooleanField(null=False, default= False)
+	type_name = models.CharField(max_length=50, null=False, choices=TypeName.choices, default=TypeName.POST)
+	status = models.CharField(max_length=50, null=False, default=Status.DRAFT)
+
+	# future fields
+	locale = models.CharField(max_length=6, null=True)
+	visibility = models.CharField(max_length=50, null=False, default="public")
+	email_recipient_filter = models.TextField(max_length=1000000000, null=False)
+	created_at = models.DateTimeField(null=False)
+
+	created_by = models.CharField(max_length=24, null=False)
+	updated_at = models.DateTimeField(null=True)
+	updated_by = models.CharField(max_length=24, null=True)
+	published_at = models.DateTimeField(null=True)
+	published_by = models.CharField(max_length=24, null=True)
+	custom_excerpt = models.CharField(max_length=2000, null=True)
+	codeinjection_head = models.CharField(max_length=65535, null=True)
+	codeinjection_foot = models.CharField(max_length=65535, null=True)
+	custom_template = models.CharField(max_length=100, null=True)
+	canonical_url = models.URLField(max_length=2000, null=True)
+	newsletter = models.ForeignKey("NewsLetter", on_delete=models.CASCADE)
+
+
