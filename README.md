@@ -1,1 +1,1 @@
-# django_cms
+# shriekdj_cms build in django
