@@ -19,3 +19,4 @@ class Post(models.Model):
 		if not self.slug:
 			self.slug = slugify(self.title + random_words())
 		super(Post, self).save(*args, **kwargs)
+
