@@ -9,15 +9,15 @@ def random_words():
 
 # Create your models here.
 class Post(models.Model):
+	id = models.BigAutoField(primary_key=True)
 	title = models.CharField(verbose_name='title', max_length=255, null=False)
 	content = models.TextField(verbose_name='content', null=False, blank=True)
 	created_at = models.DateTimeField(verbose_name='created_at',auto_now=True, auto_created=True, null=False, blank=False)
 	published_at = models.DateTimeField(verbose_name='published_at',null=True)
 	updated_at = models.DateTimeField(verbose_name='updated_at',null=True)
-	slug = models.SlugField(verbose_name='slug', max_length=255, unique=True, default='')
+	slug = models.SlugField(verbose_name='slug', max_length=255, unique=True, default=slugify(title) + str(id))
 
 	def save(self, *args, **kwargs):
-		if self.slug == '':
-			self.slug = slugify(self.title + random_words())
+		if not self.slug:
+			self.slug = slugify(self.title + str(id))
 		super(Post, self).save(*args, **kwargs)
-
