@@ -1,11 +1,29 @@
 import random
-import this
-from typing import Iterable, Optional
 from django.db import models
 from django.utils.text import slugify
+from django.conf import settings
 
 def random_words():
     return ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789'.split('')) for _ in range(6))
+
+class Profile(models.Model):
+	user = models.OneToOneField(
+		settings.AUTH_USER_MODEL,
+		on_delete=models.PROTECT,
+	)
+	website = models.URLField(blank=True)
+	bio = models.CharField(max_length=240, blank=True)
+
+	def __str__(self):
+		return self.user.get_username()
+
+class Tag(models.Model):
+	name = models.CharField(max_length=50, unique=True, null=False)
+	slug = models.SlugField(verbose_name='slug', max_length=50, unique=True)
+
+	def __str__(self) -> str:
+		return self.name
+
 
 # Create your models here.
 class Post(models.Model):
@@ -15,9 +33,4 @@ class Post(models.Model):
 	created_at = models.DateTimeField(verbose_name='created_at',auto_now=True, auto_created=True, null=False, blank=False)
 	published_at = models.DateTimeField(verbose_name='published_at',null=True)
 	updated_at = models.DateTimeField(verbose_name='updated_at',null=True)
-	slug = models.SlugField(verbose_name='slug', max_length=255, unique=True, default=slugify(title) + str(id))
-
-	def save(self, *args, **kwargs):
-		if not self.slug:
-			self.slug = slugify(self.title + str(id))
-		super(Post, self).save(*args, **kwargs)
+	slug = models.SlugField(verbose_name='slug', max_length=50, unique=True)
