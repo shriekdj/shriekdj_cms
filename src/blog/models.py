@@ -34,9 +34,12 @@ class Post(models.Model):
 	meta_description = models.CharField(max_length=150, blank=True)
 	created_at = models.DateTimeField(verbose_name='created_at',auto_now=True, auto_created=True, null=False, blank=False)
 	updated_at = models.DateTimeField(verbose_name='updated_at',null=True)
-	published_at = models.DateTimeField(verbose_name='published_at',null=True)
+	published_at = models.DateTimeField(verbose_name='published_at',null=True, blank=True)
 	is_published = models.BooleanField(verbose_name='is_published', default=False)
 	slug = models.SlugField(verbose_name='slug', max_length=50, unique=True)
 
 	author = models.ForeignKey(Profile, on_delete=models.PROTECT, default=None)
 	tags = models.ManyToManyField(Tag, blank=True)
+
+	class Meta:
+		ordering = ["-published_at"]
