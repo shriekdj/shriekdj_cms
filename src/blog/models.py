@@ -29,8 +29,14 @@ class Tag(models.Model):
 class Post(models.Model):
 	id = models.BigAutoField(primary_key=True)
 	title = models.CharField(verbose_name='title', max_length=255, null=False)
+	subtitle = models.CharField(max_length=255, blank=True)
 	content = models.TextField(verbose_name='content', null=False, blank=True)
+	meta_description = models.CharField(max_length=150, blank=True)
 	created_at = models.DateTimeField(verbose_name='created_at',auto_now=True, auto_created=True, null=False, blank=False)
-	published_at = models.DateTimeField(verbose_name='published_at',null=True)
 	updated_at = models.DateTimeField(verbose_name='updated_at',null=True)
+	published_at = models.DateTimeField(verbose_name='published_at',null=True)
+	is_published = models.BooleanField(verbose_name='is_published', default=False)
 	slug = models.SlugField(verbose_name='slug', max_length=50, unique=True)
+
+	author = models.ForeignKey(Profile, on_delete=models.PROTECT, default=None)
+	tags = models.ManyToManyField(Tag, blank=True)
