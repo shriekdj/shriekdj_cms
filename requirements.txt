@@ -1,4 +1,6 @@
-asgiref==3.5.2
-Django==4.1
-sqlparse==0.4.2
-tzdata==2022.1
+-i https://pypi.org/simple
+asgiref==3.5.2; python_version >= '3.7'
+django==4.1; python_version >= '3.8'
+pillow==10.0.1; python_version >= '3.8'
+sqlparse==0.4.2; python_version >= '3.5'
+tzdata==2022.1; python_version >= '2'

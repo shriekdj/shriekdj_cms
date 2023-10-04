@@ -21,10 +21,10 @@ class PostAdmin(admin.ModelAdmin):
         "subtitle",
         "slug",
         "published_at",
-        "is_published",
+        #"is_published",
     )
     list_filter = (
-        "is_published",
+        #"is_published",
         "published_at",
     )
     list_editable = (
@@ -32,7 +32,7 @@ class PostAdmin(admin.ModelAdmin):
         "subtitle",
         "slug",
         "published_at",
-        "is_published",
+        #"is_published",
     )
     search_fields = (
         "title",

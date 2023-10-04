@@ -8,6 +8,7 @@ asgiref = "==3.5.2"
 django = "==4.1"
 sqlparse = "==0.4.2"
 tzdata = "==2022.1"
+pillow = "*"
 
 [dev-packages]
 
